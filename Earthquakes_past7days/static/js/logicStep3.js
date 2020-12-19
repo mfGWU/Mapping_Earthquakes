@@ -1,13 +1,6 @@
 // Add console.log to check to see if our code is working.
 console.log("working");
 
-// Create the map object with center and zoom level.
-//let map = L.map('mapid').setView([30, 30], 2);
-
-
-// Pass our map layers into our layers control and add the layers control to the map.
-//L.control.layers(baseMaps).addTo(map);
-
 // We create the dark view tile layer that will be an option for our map.
 let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -35,35 +28,11 @@ let map = L.map('mapid', {
   zoom: 3,
   layers: [streets]
 })
-// Then we add our 'graymap' tile layer to the map.
-//streets.addTo(map);
 
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
 
-
-
-// Accessing the airport GeoJSON URL - Airport Data
-//let airportData = "https://raw.githubusercontent.com/mfGWU/Mapping_Earthquakes/main/majorAirports.json";
-
-// // Grabbing our GeoJSON data.
-// d3.json(airportData).then(function(data) {
-//   console.log(data);
-  
-//   // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJson(data, {
-//   //  Map Multiple GeoJSON Points and binding Popup
-//      onEachFeature: function(feature, layer){
-//        console.log(layer);
-//        layer.bindPopup("<h2>" +"Airport Code: " + feature.properties.faa + "</h2>  <hr> <h3>" +"Airport Name: "+ feature.properties.name + "</h3>");
-//      }
-
-//   }).addTo(map);
-  
-
-// });
-
-// This function returns the style data for each of the earthquakes we plot on
+// logicStep2.js added == This function returns the style data for each of the earthquakes we plot on
 // the map. We pass the magnitude of the earthquake into a function
 // to calculate the radius.
 function styleInfo(feature) {
@@ -71,15 +40,17 @@ function styleInfo(feature) {
     opacity: 1,
     fillOpacity: .5,
     //fillColor: "#ffae42",//#ffae42//#0F52BA
+    //logicStep3 Added == 
     fillColor: getColor(feature.properties.mag),
     color: "#000000",
+    //logicStep2 Added == 
     radius: getRadius(feature.properties.mag),
     stroke: true,
     weight: 0.5
   };
 }
 
-// This function determines the radius of the earthquake marker based on its magnitude.
+// logicStep2 Added == This function determines the radius of the earthquake marker based on its magnitude.
 // Earthquakes with a magnitude of 0 will be plotted with a radius of 1.
 function getRadius(magnitude) {
   if (magnitude === 0) {
@@ -88,7 +59,7 @@ function getRadius(magnitude) {
   return magnitude * 4;
 }
 
-// This function determines the color of the circle based on the magnitude of the earthquake.
+// logicStep3 Added ==  This function determines the color of the circle based on the magnitude of the earthquake.
 function getColor(magnitude) {
   if (magnitude > 5) {
     return "#ea2c2c";
@@ -107,48 +78,8 @@ function getColor(magnitude) {
   }
   return "#98ee00";
 }
-// // Accessing the Toronto airline routes GeoJSON URL.
-// let torontoData = "https://raw.githubusercontent.com/mfGWU/Mapping_Earthquakes/main/torontoRoutes.json";
 
-// // Grabbing our GeoJSON data.
-// d3.json(torontoData).then(function(data) {
-//   console.log(data);
-  
-//   // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJson(data, {
-//     style: myStyle,
-//   //  Map Multiple GeoJSON Points and binding Popup
-//      onEachFeature: function(feature, layer){
-//        console.log(layer);
-//        layer.bindPopup("<h2>" +"Airline: " + feature.properties.airline + "</h2>  <hr> <h3>" +"Destination: "+ feature.properties.dst + "</h3>");
-//      }
-//   })
-//   .addTo(map);
-// });
-
-// Accessing the Toronto neighborhoods GeoJSON URL.
-// let torontoHoods = "https://raw.githubusercontent.com/mfGWU/Mapping_Earthquakes/main/torontoNeighborhoods.json";
-
-// // Grabbing our GeoJSON data.
-// d3.json(torontoHoods).then(function(data) {
-//   console.log(data);
-  
-//   // Creating a GeoJSON layer with the retrieved data.
-//   L.geoJson(data, {
-//     style: myStyle,
-//   //  Map Multiple GeoJSON Points and binding Popup
-//      onEachFeature: function(feature, layer){
-//        console.log(layer);
-//        layer.bindPopup("<h2>" +"Neighborhood: " + feature.properties.AREA_NAME + "</h2>");
-//      }
-//   })
-//   .addTo(map);
-// });
-
-//Accessing the USGS Hazards Program -Earthquake Past 7 Days.
-//let past7days = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-
-// // Grabbing our GeoJSON data.
+//  logicStep1 Added == Retrieve the earthquake GeoJSON data.
 d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
   console.log(data);
   
@@ -163,7 +94,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
       },
   // We set the style for each circleMarker using our styleInfo function.
     style: styleInfo,
-      // We create a popup for each circleMarker to display the magnitude and
+      // logicStep3 Added == We create a popup for each circleMarker to display the magnitude and
     //  location of the earthquake after the marker has been created and styled.
     onEachFeature: function(feature, layer) {
       layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
